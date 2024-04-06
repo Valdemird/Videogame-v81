@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class MovementHandler : MonoBehaviour
 {
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float AirMoveSpeed;
@@ -135,6 +135,8 @@ public class PlayerMovement : MonoBehaviour
     {
         animator.SetBool(IsAiming, true);
         isAiming = true;
+
+        // Start line at player's position and end it in the direction the player is facing
         lineRenderer.enabled = true;
     }
 
@@ -142,25 +144,33 @@ public class PlayerMovement : MonoBehaviour
     {
         animator.SetBool(IsAiming, false);
         isAiming = false;
+
+        // Hide the line when not aiming
         lineRenderer.enabled = false;
     }
 
     private void HandleRotation()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane floorPlane = new Plane(Vector3.up, Vector3.zero);
+        Plane floorPlane = new Plane(Vector3.up, Vector3.zero); // Plane representing the floor (y = 0)
 
         if (floorPlane.Raycast(ray, out var rayDistance))
         {
-            Vector3 hitPoint = ray.GetPoint(rayDistance);
+            Vector3 hitPoint = ray.GetPoint(rayDistance); // This is the point on the floor where the mouse is pointing
+
+            // Use a fixed y-coordinate for the hit point
             hitPoint.y = 0f;
+
             Vector3 lookDirection = hitPoint - transform.position;
             lookDirection.y = 0f;
+
             Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
-            // debugging
-            Debug.DrawLine(ray.origin, hitPoint, Color.red); 
-            Debug.DrawRay(transform.position, lookDirection, Color.blue); 
+
+            // Debug lines
+            Debug.DrawLine(ray.origin, hitPoint, Color.red); // Draws a red line from the ray's origin to the hit point
+            Debug.DrawRay(transform.position, lookDirection, Color.blue); // Draws a blue ray from the GameObject's position in the look direction
+
             // Handle aiming line rendering
             HandleAimingLineRendering(lookDirection);
         }
