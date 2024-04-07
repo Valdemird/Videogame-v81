@@ -5,15 +5,12 @@ public class MovementHandler : MonoBehaviour
 {
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float AirMoveSpeed;
-    private float Gravity =  Physics.gravity.y;
     [SerializeField] private float JumpHeight;
     [SerializeField] private float RotationSpeed;
     [SerializeField] private float WeaponRange;
 
     [SerializeField] private UnitProperties playerProperties;
-
-    private Transform OriginLineRenderer { get; set; }
-
+    private float Gravity =  Physics.gravity.y;
 
     // Private fields
     private CharacterController controller;
@@ -136,7 +133,6 @@ public class MovementHandler : MonoBehaviour
         animator.SetBool(IsAiming, true);
         isAiming = true;
 
-        // Start line at player's position and end it in the direction the player is facing
         lineRenderer.enabled = true;
     }
 
@@ -144,8 +140,6 @@ public class MovementHandler : MonoBehaviour
     {
         animator.SetBool(IsAiming, false);
         isAiming = false;
-
-        // Hide the line when not aiming
         lineRenderer.enabled = false;
     }
 
@@ -168,11 +162,12 @@ public class MovementHandler : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
 
             // Debug lines
-            Debug.DrawLine(ray.origin, hitPoint, Color.red); // Draws a red line from the ray's origin to the hit point
-            Debug.DrawRay(transform.position, lookDirection, Color.blue); // Draws a blue ray from the GameObject's position in the look direction
+            Debug.DrawLine(ray.origin, hitPoint, Color.red); 
+            Debug.DrawRay(transform.position, lookDirection, Color.blue);
 
             // Handle aiming line rendering
-            HandleAimingLineRendering(lookDirection);
+            if(isAiming)
+                HandleAimingLineRendering(lookDirection);
         }
     }
 
