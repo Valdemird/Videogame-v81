@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -10,7 +11,10 @@ public class MovementHandler : MonoBehaviour
     [SerializeField] private float WeaponRange;
 
     [SerializeField] private UnitProperties playerProperties;
-    private float Gravity =  Physics.gravity.y;
+    [SerializeField] private Transform bulletSpawnPoint;
+    [SerializeField] private float fireRate;
+    private float nextFireTime = 0f;
+    private float Gravity = Physics.gravity.y;
 
     // Private fields
     private CharacterController controller;
@@ -37,6 +41,7 @@ public class MovementHandler : MonoBehaviour
             JumpHeight = playerProperties.JumpHeight;
             RotationSpeed = playerProperties.RotationSpeed;
             WeaponRange = playerProperties.WeaponRange;
+            fireRate = playerProperties.fireRate;
         }
         else
         {
@@ -115,17 +120,28 @@ public class MovementHandler : MonoBehaviour
 
     private void HandleAiming()
     {
+
+        Boolean ReadyToFire = Time.time > nextFireTime;
         if (controller.isGrounded)
         {
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && ReadyToFire)
             {
                 StartAiming();
             }
-            else if (Input.GetButtonUp("Fire1"))
+            else if (Input.GetButtonUp("Fire1") && ReadyToFire && isAiming)
             {
                 StopAiming();
+                Shoot();
+                nextFireTime = Time.time + fireRate;
             }
         }
+    }
+
+    private void Shoot()
+    {
+        GameObject bulletObject = BulletPool.Instance.GetBullet(bulletSpawnPoint.position);
+        BulletBehavior bullet = bulletObject.GetComponent<BulletBehavior>();
+        bullet.Launch(lookDirection, WeaponRange, transform.position);
     }
 
     private void StartAiming()
@@ -155,18 +171,18 @@ public class MovementHandler : MonoBehaviour
             // Use a fixed y-coordinate for the hit point
             hitPoint.y = 0f;
 
-            Vector3 lookDirection = hitPoint - transform.position;
+            lookDirection = hitPoint - transform.position;
             lookDirection.y = 0f;
 
             Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
 
             // Debug lines
-            Debug.DrawLine(ray.origin, hitPoint, Color.red); 
+            Debug.DrawLine(ray.origin, hitPoint, Color.red);
             Debug.DrawRay(transform.position, lookDirection, Color.blue);
 
             // Handle aiming line rendering
-            if(isAiming)
+            if (isAiming)
                 HandleAimingLineRendering(lookDirection);
         }
     }
