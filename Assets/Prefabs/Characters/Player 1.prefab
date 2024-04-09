@@ -79,6 +79,8 @@ MonoBehaviour:
   RotationSpeed: 5
   WeaponRange: 10
   playerProperties: {fileID: 11400000, guid: 36a19a5518be9334a9a816712fb329fb, type: 2}
+  bulletPrefab: {fileID: 0}
+  bulletSpawnPoint: {fileID: 0}
 --- !u!120 &6677191993620527174
 LineRenderer:
   serializedVersion: 2
@@ -370,7 +372,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 64033148419157756, guid: 787a31f2409a3f64c987faeb2a72ab86, type: 3}
+    - {fileID: 64229602082482782, guid: 787a31f2409a3f64c987faeb2a72ab86, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
