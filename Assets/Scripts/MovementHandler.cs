@@ -139,7 +139,7 @@ public class MovementHandler : MonoBehaviour
 
     private void Shoot()
     {
-        GameObject bulletObject = BulletPool.Instance.GetBullet(bulletSpawnPoint.position);
+        GameObject bulletObject = BulletPool.Instance.GetBullet(bulletSpawnPoint.position,true);
         BulletBehavior bullet = bulletObject.GetComponent<BulletBehavior>();
         bullet.Launch(lookDirection, WeaponRange, transform.position);
     }

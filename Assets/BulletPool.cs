@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletPool : MonoBehaviour
 {
+
+    public CameraFollow cameraFollow;
     public static BulletPool Instance { get; private set; }
 
     [SerializeField] private GameObject bulletPrefab;
@@ -44,7 +47,7 @@ public class BulletPool : MonoBehaviour
         return bullet;
     }
 
- public GameObject GetBullet(Vector3 position)
+ public GameObject GetBullet(Vector3 position, Boolean withShake = false )
 {
     foreach (GameObject bullet in bullets)
     {
@@ -52,6 +55,7 @@ public class BulletPool : MonoBehaviour
         {
             bullet.transform.position = position;
             bullet.SetActive(true);
+            cameraFollow.StartShake();
             return bullet;
         }
     }
