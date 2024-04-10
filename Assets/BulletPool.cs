@@ -47,27 +47,27 @@ public class BulletPool : MonoBehaviour
         return bullet;
     }
 
- public GameObject GetBullet(Vector3 position, Boolean withShake = false )
-{
-    foreach (GameObject bullet in bullets)
+    public GameObject GetBullet(Vector3 position, Boolean withShake = false)
     {
-        if (!bullet.activeInHierarchy)
+        foreach (GameObject bullet in bullets)
         {
-            bullet.transform.position = position;
-            bullet.SetActive(true);
-            cameraFollow.StartShake();
-            return bullet;
+            if (!bullet.activeInHierarchy)
+            {
+                bullet.transform.position = position;
+                bullet.SetActive(true);
+                cameraFollow.StartShake();
+                return bullet;
+            }
         }
-    }
 
-    // If no inactive bullets are available, create more bullets
-    for (int i = 0; i < poolIncrementSize; ++i)
-    {
-        CreateNewBullet();
-    }
+        // If no inactive bullets are available, create more bullets
+        for (int i = 0; i < poolIncrementSize; ++i)
+        {
+            CreateNewBullet();
+        }
 
-    return GetBullet(position);
-}
+        return GetBullet(position);
+    }
 
     public void ReturnBullet(GameObject bullet)
     {
