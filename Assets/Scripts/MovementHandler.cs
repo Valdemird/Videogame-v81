@@ -12,6 +12,8 @@ public class MovementHandler : MonoBehaviour
 
     [SerializeField] private UnitProperties playerProperties;
     [SerializeField] private Transform bulletSpawnPoint;
+
+    [SerializeField] private ParticleSystem shootParticles;
     [SerializeField] private float fireRate;
     private float nextFireTime = 0f;
     private float Gravity = Physics.gravity.y;
@@ -24,6 +26,8 @@ public class MovementHandler : MonoBehaviour
     private bool isJumping = false;
     private bool isAiming = false;
     private Animator animator;
+
+    private AudioSource weaponAudioSource;
 
 
     // Animator parameters
@@ -60,6 +64,12 @@ public class MovementHandler : MonoBehaviour
         }
 
         animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+        {
+            Debug.LogError("Animator component not found on this game object.");
+        }
+
+        weaponAudioSource = GetComponentInChildren<AudioSource>();
         if (animator == null)
         {
             Debug.LogError("Animator component not found on this game object.");
@@ -139,8 +149,15 @@ public class MovementHandler : MonoBehaviour
 
     private void Shoot()
     {
-        GameObject bulletObject = BulletPool.Instance.GetBullet(bulletSpawnPoint.position,true);
+        GameObject bulletObject = BulletPool.Instance.GetBullet(bulletSpawnPoint.position, true);
         BulletBehavior bullet = bulletObject.GetComponent<BulletBehavior>();
+
+        if (shootParticles != null)
+        {
+            shootParticles.Play();
+        }
+
+        weaponAudioSource.Play();
         bullet.Launch(lookDirection, WeaponRange, transform.position);
     }
 
