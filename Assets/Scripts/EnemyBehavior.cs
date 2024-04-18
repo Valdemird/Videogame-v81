@@ -1,30 +1,86 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    public Transform player; // Assign this in the Inspector
-    private NavMeshAgent navMeshAgent;
+    [SerializeField] private float attackDistance = 0.5f;
+    [SerializeField] private float attackRate = 1f;
+    [SerializeField] private Collider attackCollider;
 
-    // Start is called before the first frame update
-    void Start()
+    private NavMeshAgent navMeshAgent;
+    private Animator animator;
+    private float nextAttackTime;
+    private bool isBeingDestroyed = false;
+    private Transform player;
+
+    private static readonly int DestroyHash = Animator.StringToHash("destroy");
+    private static readonly int AttackHash = Animator.StringToHash("attack");
+
+    private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        if (navMeshAgent != null && player != null)
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        navMeshAgent.updateRotation = true;
+        nextAttackTime = Mathf.NegativeInfinity;
+    }
+
+    private void Update()
+    {
+        if (isBeingDestroyed) return;
+
+        navMeshAgent.SetDestination(player.position);
+
+        if (navMeshAgent.remainingDistance <= attackDistance && Time.time >= nextAttackTime)
         {
-            navMeshAgent.SetDestination(player.position);
+            Attack();
+            nextAttackTime = Time.time + 1f / attackRate;
         }
     }
 
-
-    void OnDestroy()
+    public void Hit()
     {
-        SpawnerBehavior.currentEnemies--; // Decrement the number of current enemies
+        isBeingDestroyed = true;
+        navMeshAgent.isStopped = true;
+        animator.Play(DestroyHash);
+        StartCoroutine(DestroyEnemy());
+    }
+
+    private IEnumerator DestroyEnemy()
+    {
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        Destroy(gameObject);
+    }
+
+    private void Attack()
+    {
+        animator.Play(AttackHash);
+        StartCoroutine(DisableAttackColliderAfterDelay());
+    }
+
+    private IEnumerator DisableAttackColliderAfterDelay()
+    {
+        yield return new WaitForSeconds(0.4f);
+        attackCollider.enabled = true;
+        yield return new WaitForSeconds(0.45f);
+        attackCollider.enabled = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("HIIIT HAND");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SpawnerBehavior.currentEnemies--;
     }
 }

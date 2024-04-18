@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 186d4e9227f8b4ceca8d884bf7a5dbb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minSpeed: 2
+  maxSpeed: 7
   enemyPrefab: {fileID: 709938118869085463, guid: 8c7667cfe1919415a91d810a4c73232d, type: 3}
   spawnAreaSize: 3
   spawnRate: 0.26
