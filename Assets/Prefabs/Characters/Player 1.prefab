@@ -76,7 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 5
   AirMoveSpeed: 2
-  JumpHeight: 2
+  JumpHeight: 1
   RotationSpeed: 5
   WeaponRange: 10
   playerProperties: {fileID: 11400000, guid: 36a19a5518be9334a9a816712fb329fb, type: 2}
