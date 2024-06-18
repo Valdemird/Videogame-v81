@@ -176,6 +176,7 @@ public class MovementHandler : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
+
     private void HandleRotation()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
