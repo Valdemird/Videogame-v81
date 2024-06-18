@@ -29,6 +29,14 @@ public class BulletPool : MonoBehaviour
         Initialize(10);
     }
 
+    public void ResetPool()
+    {
+        foreach (GameObject bullet in bullets)
+        {
+           Start();
+        }
+    }
+
     public void Initialize(int size)
     {
         bullets = new List<GameObject>(size);

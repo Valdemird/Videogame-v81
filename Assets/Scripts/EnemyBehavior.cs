@@ -75,6 +75,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            other.GetComponent<MovementHandler>().GetDamage(1);
             Debug.Log("HIIIT HAND");
         }
     }
