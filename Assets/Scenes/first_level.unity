@@ -6315,18 +6315,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 296575106137089155, guid: 8ebf64b1141e94398b3f603aa55193e5, type: 3}
-      propertyPath: spawnRate
-      value: 0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 296575106137089155, guid: 8ebf64b1141e94398b3f603aa55193e5, type: 3}
-      propertyPath: enemyPrefab
-      value: 
-      objectReference: {fileID: 709938118869085463, guid: 8c7667cfe1919415a91d810a4c73232d, type: 3}
-    - target: {fileID: 1933580828250621176, guid: 8ebf64b1141e94398b3f603aa55193e5, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 1933580828250621176, guid: 8ebf64b1141e94398b3f603aa55193e5, type: 3}
       propertyPath: m_Name
       value: Spawner (1)
