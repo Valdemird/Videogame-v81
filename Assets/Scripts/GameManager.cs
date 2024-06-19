@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,8 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public int playerLives;
     public Slider healthBar;
+    public TextMeshProUGUI scoreText;
     public int internalPlayerLives;
-
+    private int score = 0;
     public static GameManager instance = null;
 
     void Awake()
@@ -21,7 +23,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+
+    }
+
+    public void gainScorePoints(int points)
+    {
+        score+= points;
+        scoreText.text = "Score: " + score;
     }
 
     public void DecreaseHealth(int damage)
@@ -34,9 +42,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void GameOver()
+    public void GameOver()
     {
-        Debug.Log("Game Over");
         BulletPool.Instance.ResetPool();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         

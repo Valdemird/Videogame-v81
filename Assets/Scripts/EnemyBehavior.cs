@@ -53,6 +53,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private IEnumerator DestroyEnemy()
     {
+        GameManager.instance.gainScorePoints(1);
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         Destroy(gameObject);
     }
@@ -76,7 +77,6 @@ public class EnemyBehavior : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<MovementHandler>().GetDamage(1);
-            Debug.Log("HIIIT HAND");
         }
     }
 

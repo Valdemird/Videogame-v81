@@ -29,13 +29,18 @@ public class BulletPool : MonoBehaviour
         Initialize(10);
     }
 
-    public void ResetPool()
+public void ResetPool()
+{
+    foreach (GameObject bullet in bullets)
     {
-        foreach (GameObject bullet in bullets)
+        if (bullet != null)
         {
-           Start();
+            bullet.SetActive(false);
         }
     }
+
+    bullets.RemoveAll(bullet => bullet == null);
+}
 
     public void Initialize(int size)
     {
