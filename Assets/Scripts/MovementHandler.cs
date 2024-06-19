@@ -176,6 +176,11 @@ public class MovementHandler : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
+    public void GetDamage(int damage)
+    {
+        GameManager.instance.DecreaseHealth(damage);
+        animator.Play("damage");
+    }
 
     private void HandleRotation()
     {
