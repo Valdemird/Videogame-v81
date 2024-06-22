@@ -17,4 +17,4 @@ MonoBehaviour:
   JumpHeight: 0.5
   RotationSpeed: 20
   WeaponRange: 10
-  fireRate: 0.4
+  fireRate: 0
