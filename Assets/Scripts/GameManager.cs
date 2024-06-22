@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
         {
             internalPlayerLives = playerLives;
             instance = this;
-            DontDestroyOnLoad(gameObject);  // Mantén GameManager a través de las escenas si es necesario
         }
         else if (instance != this)
         {
@@ -29,16 +28,29 @@ public class GameManager : MonoBehaviour
 
     }
 
-    
+
 
     public void gainScorePoints(int points)
     {
-        score+= points;
+        if(scoreText == null)
+        {
+            scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
+        }
+        score += points;
         scoreText.text = "Score: " + score;
+
+        if(score >= 10)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 
     public void DecreaseHealth(int damage)
     {
+        if(healthBar == null)
+        {
+            healthBar = GameObject.FindGameObjectWithTag("HealthBar").GetComponent<Slider>();
+        }
         playerLives -= damage;
         healthBar.value = playerLives;
         if (playerLives <= 0)
@@ -59,19 +71,21 @@ public class GameManager : MonoBehaviour
     {
         playerLives = internalPlayerLives;
         healthBar.value = playerLives;
+        score = 0;
+        scoreText.text = "Score: " + 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GameOver()
     {
-        menuGame.Instance.ShowGameOverMenu(); 
+        menuGame.Instance.ShowGameOverMenu();
     }
 
-     // Función para reiniciar el juego
+    // Función para reiniciar el juego
     public void RestartGame()
     {
         livesLost = 0;  // Reinicia el contador de vidas perdidas
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); 
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     // Función para volver al menú principal
